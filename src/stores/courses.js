@@ -15,9 +15,9 @@ export const useCourseStore = defineStore('courses', ()=>{
        }
     }
 
-    const handleGetSingleCourse = async (payload)=>{
+    const handleGetSingleCourse = async (id)=>{
         try {
-            singleCourse.value = await getSingleCourse(payload)
+            singleCourse.value = await getSingleCourse(id)
             return singleCourse.value
         } catch (error) {
             console.log(error)

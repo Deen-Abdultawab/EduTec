@@ -1,5 +1,5 @@
 <template>
-    <div class="w-[90%] mx-auto py-4 justify-end hidden tab2:flex">
+    <div class="w-[full] mx-auto p-8 justify-end hidden tab2:flex sticky top-0 bg-white">
         <menuIcon1 class="cursor-pointer" @click="handleNav"/>
     </div>
     <div class="mobileNav overlay fixed top-0 left-0 w-full h-full bg-transparent z-[99] backdrop-blur-[4px]" v-if="showNav">
@@ -259,7 +259,7 @@
         </ul>
 
     </div>
-    <div class="h-[100vh] overflow-auto">
+    <div class="h-[100vh] overflow-auto tab2:h-auto">
         <slot></slot>
     </div>
    </section>

@@ -3,8 +3,8 @@
     <article 
       class="grid grid-cols-customGrid1 desk:grid-cols-1 gap-4 border p-3 rounded-[12px] cursor-pointer hover:border-[gray] transitionItem"
       >
-        <div class="rounded-l-[12px] overflow-hidden">
-          <img src="https://img-c.udemycdn.com/course/750x422/6035102_7d1a.jpg" alt="">
+        <div class="rounded-l-[12px] tab2:rounded-[12px] overflow-hidden max-h-[25rem] w-full h-[15rem]">
+          <img :src="props.course.image_url" alt="" class="object-cover h-full w-full">
         </div>
         <div class="flex flex-col justify-between">
             <div class="flex flex-col gap-[0.3rem]">

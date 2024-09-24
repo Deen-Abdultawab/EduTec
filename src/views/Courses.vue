@@ -45,7 +45,7 @@ onMounted(async ()=>{
     <div v-else>
       <div class="course-lists flex flex-col gap-6">
        <courseCard 
-        v-for="item in courses.courses"
+        v-for="item in courses"
         :course="item"
         @click="routeToDetails(item.id)"
        />

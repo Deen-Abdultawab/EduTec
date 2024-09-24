@@ -6,7 +6,7 @@
             <div class="mt-8 flex gap-[2.5rem] tab1:flex-col" v-else>
                 <article class="flex-1 tab1:order-2">
                     <div class="courseInfo flex flex-col gap-4">
-                        <h1 class="text-[1.5rem] font-[700]">{{ singleCourse.title }} </h1>
+                        <h1 class="text-[1.5rem] font-[700]">{{ singleCourse?.title }} </h1>
                         <div class="flex items-center gap-4">
                             <span class="basicFlex font-[600] gap-[0.5rem] text-[0.9rem]">
                                 <starIcon />
@@ -14,14 +14,14 @@
                             </span>
                             <span class="basicFlex font-[600] gap-[0.5rem] text-[0.9rem]">
                                 <groupIcon />
-                                <h3>{{ formatNumber(singleCourse.students) }} students</h3>
+                                <h3>{{ formatNumber(singleCourse?.students) }} students</h3>
                             </span>
                             <span class="basicFlex font-[600] gap-[0.5rem] text-[0.9rem]">
                                 <academicsIcon />
-                                <h3>{{ singleCourse.author }}</h3>
+                                <h3>{{ singleCourse?.author }}</h3>
                             </span>
                         </div>
-                        <p class="text-[grey] text-[0.9rem] font-[500]">{{ singleCourse.description }}</p>
+                        <p class="text-[grey] text-[0.9rem] font-[500]">{{ singleCourse?.description }}</p>
                     </div>
                     <div class="mt-8">
                         <h3 class="text-[1.5rem] font-[700]">Course content</h3>
@@ -31,32 +31,33 @@
                                 <div class="flex items-center gap-[0.2rem]"> 
                                     <p class="w-[0.2rem] h-[0.2rem] rounded-full bg-[#7b7c7e]">
 
-                                    </p>{{ singleCourse.total_lectures }} lectures <p class="w-[0.2rem] h-[0.2rem] rounded-full bg-[#7b7c7e]"></p></div>
-                                <span>{{ singleCourse.total_hours }} total length</span>
+                                    </p>{{ singleCourse?.total_lectures }} lectures <p class="w-[0.2rem] h-[0.2rem] rounded-full bg-[#7b7c7e]"></p></div>
+                                <span>{{ singleCourse?.total_hours }} total length</span>
                             </div>
                             <div>
-                                <h3 class="text-[blue] underline cursor-pointer">Expand all sections</h3>
+                                <h3 class="text-[blue] underline cursor-pointer" @click="showAllModal">Expand all sections</h3>
                             </div>
                         </div>
                         <div class="mt-[0.5rem]">
-                            <article class="text-[0.9rem] border p-[0.7rem] rounded-t-[12px] transitionItem" v-for="content in singleCourse.course_contents">
+                            <article class="text-[0.9rem] border p-[0.7rem] transitionItem" v-for="(content, index) in singleCourse?.course_contents"
+                            :class="index === 0? 'rounded-t-[12px]': ''"
+                            >
                                 <div class="basicFlex justify-between mb-[0.7rem]">
                                     <div class="basicFlex gap-[0.5rem]">
                                         <arrowIcon class="cursor-pointer transitionItem" 
-                                        :class="showModal? 'rotate-[180deg]': ''"
-                                        @click="handleShowModal"/>
-                                        <h3 class="text-[#000] font-[500]">{{ content.section_title }}</h3>
+                                        :class="isModalOpen(index)? 'rotate-[180deg]': ''"
+                                        @click="toggleModal(index)"/>
+                                        <h3 class="text-[#000] font-[500]">{{ content?.section_title }}</h3>
                                     </div>
                                     <div class="border-2 border-[grey] rounded-full w-6 h-6"></div>
                                 </div>
                                 <div class="modal transitionItem overflow-hidden"
-                                :class="showModal? 'h-auto': 'h-0'"
+                                :class="isModalOpen(index)? 'h-auto': 'h-0'"
                                 >
-                                <!-- {{ content.contents }} -->
                                     <ul class="pl-6 text-[grey] flex flex-col gap-[0.5rem]">
                                         <li 
                                         class="basicFlex justify-between"
-                                        v-for="item in content.contents"
+                                        v-for="item in content?.contents"
                                         >
                                             <div class="basicFlex gap-[0.5rem]">
                                                 <playIcon class="w-[1.2rem]"/>
@@ -73,15 +74,15 @@
                 </article>
                 <article class="w-[40%] border p-6 rounded-[12px] flex flex-col gap-4 tab1:flex-row tab1:w-full tab1:gap-8  mob:flex-col mob:p-4">
                     <div class="flex flex-col gap-4 tab1:w-[50%] mob:w-full">
-                        <div class="rounded-[12px] overflow-hidden">
-                            <img src="https://img-c.udemycdn.com/course/750x422/6035102_7d1a.jpg" alt="">
+                        <div class="rounded-[12px] overflow-hidden tab1:h-[11.84rem] mob:h-full max-h-[18rem]">
+                            <img :src="singleCourse?.image_url" alt="">
                         </div>
                         <div class="flex justify-between">
                             <div class="basicFlex font-[700]">
-                                <h3 class=font-[700]>$<span class="font-[700] text-[1.3rem]">{{ singleCourse.discounted_price }}</span> </h3>
-                                <h3 class="text-[1rem] ml-[0.5rem] text-[grey] line-through">${{ singleCourse.price }}</h3>
+                                <h3 class=font-[700]>$<span class="font-[700] text-[1.3rem]">{{ singleCourse?.discounted_price }}</span> </h3>
+                                <h3 class="text-[1rem] ml-[0.5rem] text-[grey] line-through">${{ singleCourse?.price }}</h3>
                             </div>
-                            <h3 class="font-[700] text-[red] text-[1rem]">{{ singleCourse.discount_percentage}}% off</h3>
+                            <h3 class="font-[700] text-[red] text-[1rem]">{{ singleCourse?.discount_percentage}}% off</h3>
                         </div>
                         <div class="flex justify-between gap-4 border-b pb-4">
                             <button class="bg-[blue] text-white w-full flex-1 p-[0.5rem] rounded-[12px]">Buy Now</button>
@@ -95,11 +96,11 @@
                         <ul class="courseFeatures flex flex-col gap-[0.5rem]">
                             <li>
                                 <playIcon />
-                                <h3>{{ singleCourse.on_demand_video }} hours on-demand video</h3>
+                                <h3>{{ singleCourse?.on_demand_video }} hours on-demand video</h3>
                             </li>
                             <li>
                                 <downloadIcon />
-                                <h3>{{ singleCourse.downloadable_resources }} downloadable resources</h3>
+                                <h3>{{ singleCourse?.downloadable_resources }} downloadable resources</h3>
                             </li>
                             <li>
                                 <phoneIcon />
@@ -109,11 +110,11 @@
                             </li>
                             <li>
                                 <readIcon />
-                                <h3>{{ singleCourse.articles }} articles</h3>
+                                <h3>{{ singleCourse?.articles }} articles</h3>
                             </li>
                             <li>
                                 <codeIcon />
-                                <h3>{{ singleCourse.coding_exercises }} coding exercises</h3>
+                                <h3>{{ singleCourse?.coding_exercises }} coding exercises</h3>
                             </li>
                             <li>
                                 <approvalIcon class="rotate-[180deg]"/>
@@ -149,14 +150,25 @@ import approvalIcon from '@/components/icons/approvalIcon.vue';
 import shortLoader from "@/components/ui/ShortLoader.vue"
 
 const courseStore = useCourseStore()
-const {courses} = storeToRefs(courseStore)
+const {courses, singleCourse} = storeToRefs(courseStore)
 const route = useRoute()
 const isLoading = ref(false)
-const showModal = ref(false)
-const singleCourse = ref({})
+const activeIndex = ref(false)
 
-const handleShowModal = ()=>{
-    showModal.value = !showModal.value
+const toggleModal = (index)=>{
+    if (activeIndex.value === index) {
+        activeIndex.value = null;
+    } else {
+        activeIndex.value = index;
+    }
+}
+
+const isModalOpen = (index) => {
+    return activeIndex.value === index;
+};
+
+const showAllModal = ()=>{
+    console.log(true)
 }
 
 function formatNumber(value) {
@@ -171,13 +183,13 @@ const handleGetSingleCourse = async ()=>{
     //   id: Number(route.params.slug)
     // }
     try {
-        courses.value?.courses?.forEach(course=>{
-            if(course.id === id){
-                singleCourse.value = course
-            }
-        })
+        // courses.value?.courses?.forEach(course=>{
+        //     if(course.id === id){
+        //         singleCourse.value = course
+        //     }
+        // })
+        await courseStore.handleGetSingleCourse(id)
         console.log(singleCourse.value)
-        // await courseStore.handleGetSingleCourse(payload)
         isLoading.value = false
     } catch (error) {
         console.log(error)
@@ -187,8 +199,6 @@ const handleGetSingleCourse = async ()=>{
 
 
 onMounted(async ()=>{
-    await courseStore.handleGetAllCourses()
-    console.log(courses.value)
     await handleGetSingleCourse()
 })
 
