@@ -35,7 +35,9 @@
                                 <span>{{ singleCourse?.total_hours }} total length</span>
                             </div>
                             <div>
-                                <h3 class="text-[blue] underline cursor-pointer" @click="showAllModal">Expand all sections</h3>
+                                <h3 class="text-[blue] underline cursor-pointer" @click="showAllModal">
+                                {{ expandAll ? 'Collapse all sections' : 'Expand all sections' }}
+                                </h3>
                             </div>
                         </div>
                         <div class="mt-[0.5rem]">
@@ -153,22 +155,32 @@ const courseStore = useCourseStore()
 const {courses, singleCourse} = storeToRefs(courseStore)
 const route = useRoute()
 const isLoading = ref(false)
-const activeIndex = ref(false)
+const activeIndex = ref([])
 
-const toggleModal = (index)=>{
-    if (activeIndex.value === index) {
-        activeIndex.value = null;
-    } else {
-        activeIndex.value = index;
-    }
+const expandAll = ref(false); 
+
+const toggleModal = (index) => {
+  if (activeIndex.value.includes(index)) {
+    activeIndex.value = activeIndex.value.filter(i => i !== index)
+  } else {
+    activeIndex.value.push(index);
+  }
 }
 
-const isModalOpen = (index) => {
-    return activeIndex.value === index;
-};
 
-const showAllModal = ()=>{
-    console.log(true)
+const isModalOpen = (index) => {
+  return activeIndex.value.includes(index);
+}
+
+const showAllModal = () => {
+  if (expandAll.value) {
+    // Collapse all sections
+    activeIndex.value = [];
+  } else {
+    // Expand all sections
+    activeIndex.value = singleCourse.value.course_contents.map((_, index) => index);
+  }
+  expandAll.value = !expandAll.value;
 }
 
 function formatNumber(value) {
@@ -179,15 +191,7 @@ function formatNumber(value) {
 const handleGetSingleCourse = async ()=>{
     isLoading.value = true
     let id = Number(route.params.slug)
-    // let payload = {
-    //   id: Number(route.params.slug)
-    // }
     try {
-        // courses.value?.courses?.forEach(course=>{
-        //     if(course.id === id){
-        //         singleCourse.value = course
-        //     }
-        // })
         await courseStore.handleGetSingleCourse(id)
         console.log(singleCourse.value)
         isLoading.value = false
