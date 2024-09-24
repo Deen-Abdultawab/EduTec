@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+   
+
+    .sidebar ul {
+        @apply list-none flex flex-col
+    }
+
+    .sidebar a {
+        @apply flex items-center gap-4 capitalize py-[0.5rem] px-6 cursor-pointer
+    }
+
+    .sidebar li span{
+        @apply text-[1rem] font-[500]
+    }
+
+    .basicFlex {
+        @apply flex items-center
+    } 
+
+    .courseFeatures li {
+        @apply flex items-center gap-4 text-[0.9rem] text-[grey]
+    }
+
+    .courseFeatures svg {
+        @apply w-[1.2rem]
+    }
+
+}
